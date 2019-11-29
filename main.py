@@ -42,19 +42,66 @@ def get_question_count(c=30):
 def get_num(difficulty):
     return np.random.randint((difficulty)**2, (difficulty+1)**3)
 
-def additions():
+def get_operator():
+    err_msg = 'Please select an integer between 1 and 7 in the following list! Try again:'
+    operator = get_int('Choose from the following math operations:\n1. addition\n2. subtraction\n3. multiplication\n4. division\n5. floor division\n6. modulus\n7. exponentiation\nYou choose? ', err_msg)
+    if (operator >= 1) & (operator <= 7):
+        return operator
+    else:
+        print(err_msg)
+        get_operator()
+
+def math_questions():
     difficulty = get_difficulty()
     question_count = get_question_count()
-    
+    operator = get_operator()
+
     q = []
     correct_count = 0
     for i in range(question_count):
         x = get_num(difficulty)
         y = get_num(difficulty)
-        question_string = str(x) + ' + ' + str(y) + ' = '
-        answer = get_int(question_string)
-        q.append([x, y, answer, x + y == answer])
-        if answer == x + y:
+
+        if operator == 1:
+            question_string = str(x) + ' + ' + str(y) + ' = '
+            answer = get_int(question_string)
+            correct = answer == x + y
+        if operator == 2:
+            if x < y: x, y = y, x
+            question_string = str(x) + ' - ' + str(y) + ' = '
+            answer = get_int(question_string)
+            correct = answer == x - y
+        if operator == 3:
+            question_string = str(x) + ' * ' + str(y) + ' = '
+            answer = get_int(question_string)
+            correct = answer == x * y
+        if operator == 4:
+            x = np.random.randint(11)
+            y = np.random.randint(11)
+            x = x * y
+            question_string = str(x) + ' / ' + str(y) + ' = '
+            answer = get_int(question_string)
+            correct = answer == x / y
+        if operator == 5:
+            if x < y: x, y = y, x
+            question_string = str(x) + ' // ' + str(y) + ' = '
+            answer = get_int(question_string)
+            correct = answer == x // y
+        if operator == 6:
+            if x < y: x, y = y, x
+            question_string = str(x) + ' % ' + str(y) + ' = '
+            answer = get_int(question_string)
+            correct = answer == x % y
+        if operator == 7:
+            x = np.random.randint(21)
+            y = 2
+            question_string = str(x) + ' ** ' + str(y) + ' = '
+            answer = get_int(question_string)
+            correct = answer == x ** y
+        
+        q.append([x, y, answer, correct])
+
+        if correct:
             correct_count += 1
             print('Correct! {}/{}\n'.format(correct_count, i+1))
         else:
@@ -64,7 +111,7 @@ def additions():
         print(i)
 
 def main():
-    additions()
+    math_questions()
 
 if __name__ == '__main__':
     main()
